@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./WeatherApp.css";
 
 const WeatherApp = () => {
   const [city, setCity] = useState("");
@@ -6,7 +7,7 @@ const WeatherApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const API_KEY = "15a8ff37589c1d500266e9de516d0d3b"; // replace with your OpenWeatherMap key
+  const API_KEY = "15a8ff37589c1d500266e9de516d0d3b";
 
   const getWeather = async () => {
     if (!city) return;
@@ -31,40 +32,32 @@ const WeatherApp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-      <h1 className="text-3xl font-bold mb-4">🌤 Weather Checker</h1>
+    <div className="weather-container">
+      <h1 className="weather-title">🌤 Weather Checker</h1>
 
-      <div className="flex space-x-2 mb-4">
+      <div className="search-box">
         <input
           type="text"
           placeholder="Enter city..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="p-2 rounded-lg text-black"
         />
-        <button
-          onClick={getWeather}
-          className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600"
-        >
-          Check
-        </button>
+        <button onClick={getWeather}>Check</button>
       </div>
 
       {loading && <p>Loading...</p>}
-      {error && <p className="text-red-400">{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       {weather && (
-        <div className="bg-gray-800 p-4 rounded-lg shadow-lg text-center">
-          <h2 className="text-2xl font-semibold">{weather.name}</h2>
-          <p className="text-xl">{weather.main?.temp ?? "--"}°C</p>
+        <div className="weather-card">
+          <h2>{weather.name}</h2>
+          <p>{weather.main?.temp ?? "--"}°C</p>
           <p className="capitalize">{weather.weather?.[0]?.description ?? ""}</p>
 
-          {/* ✅ only render if icon exists */}
           {weather.weather?.[0]?.icon ? (
             <img
               src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
               alt="weather icon"
-              className="mx-auto"
             />
           ) : (
             <p>No icon available</p>
